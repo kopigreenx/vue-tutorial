@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiBaseUrl = "localhost:8080";
+const apiBaseUrl = "http://localhost:8080";
 
 export default class TodoServices{
     getAllTodos(){
