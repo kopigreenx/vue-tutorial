@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import About from './views/About.vue'
 import Home from './views/Home.vue'
+import Todo from './views/Todo.vue'
 
 Vue.use(Router);
 
@@ -16,6 +17,10 @@ export default new Router({
         {
             path : '/About',
             component: About
+        },
+        {
+            path : '/Todo',
+            component: Todo
         }
     ]
 })
