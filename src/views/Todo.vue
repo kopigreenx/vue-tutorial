@@ -1,55 +1,75 @@
 <template>
   <div>
   <div class="row">
+    <div class="col s6">
+      
+<div class="fixed-action-btn">
+  <a class="btn-floating btn-large red">
+    <i class="large material-icons">apps</i>
+  </a>
+  <ul>
+    <li><a class="btn-floating green modal-trigger" data-target="modal1"><i class="material-icons">add_circle_outline</i></a></li>
+  </ul>
+</div>
+      
+    </div>
+  </div>
+  <div class="row">
     <div class="col s4" v-for="(todo,index) in todos"
     v-bind:item="todo"
     :key="todo._id"
     :index="index">
-      <div class="card blue-grey darken-1">
+      <div class="card blue-grey darken-1 z-depth-5">
         <div class="card-content white-text">
           <span class="card-title">{{todo.description}}</span>
-          <p>this is {{todo.confirmed}}</p>
+          <p>
+            <label>
+              <input type="checkbox" :key="todo._id" :value="todo._id" />
+            </label>
+          </p>
+          <p><span>{{todo.confirmed}}</span></p>
         </div>
         <div class="card-action">
-          <a href="#" id="b_edit">Edit</a>
-          <a href="#" id="b_delete">Delete</a>
+          <a href="#!" class="modal-trigger" data-target="modal1" id="b_edit">Edit</a>
+          <a href="#!" class="modal-trigger" data-target="modal1" id="b_delete">Delete</a>
+          
         </div>
       </div>
     </div>
   </div>
-            <a class="waves-effect waves-light btn modal-trigger" data-target="modal1" href="#modal1">Modal</a>
-
-  <!-- Modal Structure -->
-  <div id="modal1" class="modal modal-fixed-footer">
-    <div class="modal-content">
-      <h4>Modal Header</h4>
-      <p>A bunch of text</p>
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
-    </div>
-  </div>
+  <PostForm @todosCreated="addTodo" />
   </div>
 </template>
 
 <script>
 import TodoServices from '../TodoServices';
+import PostForm from '../components/PostForm';
+
 const ts = new  TodoServices();
 export default {
   name:"Todo",
-  data(){
-    return{
+  components:{
+    PostForm
+  },
+  data:() => ({
       todos:[]
+    }),
+  methods: {
+    addTodo(todo){
+      console.log(todo);
+      this.todos.unshift(todo);
     }
   },
   created(){
     ts.getAllTodos()
     .then(result => {
       this.todos = result.data;
-      //console.log(this.todos);
     }).catch(err =>{
       console.error(err);
     })
+  },
+  mounted() {
+    M.AutoInit();
   }
 }
 </script>
