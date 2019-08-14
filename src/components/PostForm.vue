@@ -11,7 +11,9 @@
                 </div>
             </div>
             <div class="row">
-                <button type="submit" class="waves-effect wives-light btn">Simpan</button>
+                <button type="submit" class="waves-effect wives-light btn">
+                {{id ? 'Update' : 'Simpan'}}
+                </button>
             </div>
         </form>
     </div>
@@ -25,26 +27,40 @@ const ts = new  TodoServices();
 
 export default {
     name:"PostForm",
+    props:{
+        editingTodo:Object
+    },
     data:() => ({
-        description:''
+        description:'',
+        modalInstance: null,
+        id:null
     }),
     mounted() {
         M.AutoInit();
-        
+        const modal = document.querySelector('.modal')
+        this.modalInstance = M.Modal.init(modal)
     },
     methods: {
         onSubmit(){
             const todos = {
+                _id: this.id,
                 description : this.description,
                 confirmed:false
             }
-            ts.writePost(todos).then((result) => {
+            ts.writeTodos(todos).then((result) => {
                 //console.log(result);
                 this.description='';
+                this.modalInstance.close();
                 this.$emit('todosCreated',result.data);
             }).catch((err) => {
                 console.log(err);
             });
+        }
+    },
+    watch: {
+        editingTodo(todo){
+            this.description=todo.description;
+            this.id = todo._id;
         }
     },
     

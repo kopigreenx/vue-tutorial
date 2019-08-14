@@ -30,14 +30,14 @@
           <p><span>{{todo.confirmed}}</span></p>
         </div>
         <div class="card-action">
-          <a href="#!" class="modal-trigger" data-target="modal1" id="b_edit">Edit</a>
-          <a href="#!" class="modal-trigger" data-target="modal1" id="b_delete">Delete</a>
+          <a href="#!" class="modal-trigger" data-target="modal1" @click="editTodo(todo)">Edit</a>
+          <a href="#!" class="modal-trigger" @click="deleteTodo(todo._id)">Delete</a>
           
         </div>
       </div>
     </div>
   </div>
-  <PostForm @todosCreated="addTodo" />
+  <PostForm @todosCreated="addTodo" :editingTodo="editingTodo"/>
   </div>
 </template>
 
@@ -52,12 +52,23 @@ export default {
     PostForm
   },
   data:() => ({
-      todos:[]
+      todos:[],
+      editingTodo:null
     }),
   methods: {
     addTodo(todo){
       console.log(todo);
       this.todos.unshift(todo);
+    },
+    editTodo(todo){
+      this.editingTodo=todo;
+    },
+    deleteTodo(id){
+      ts.deleteTodos(id).then(() => {
+        this.todos = this.todos.filter(p => p._id!==id);
+      }).catch((err) => {
+        console.log(err);
+      });
     }
   },
   created(){
