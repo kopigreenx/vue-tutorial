@@ -40,8 +40,8 @@
   <PostForm @todosCreated="addTodo" :editingTodo="editingTodo"/>
   <div class="tap-target" data-target="menu">
     <div class="tap-target-content">
-      <h5>Title</h5>
-      <p>A bunch of text</p>
+      <h5>Menu</h5>
+      <p>Hover This Button to reveal Add button</p>
     </div>
   </div>
   </div>
