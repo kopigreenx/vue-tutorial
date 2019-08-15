@@ -15,7 +15,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col s4" v-for="(todo,index) in todos"
+    <div class="col s6" v-for="(todo,index) in todos"
     v-bind:item="todo"
     :key="todo._id"
     :index="index">
@@ -78,9 +78,9 @@ export default {
     }).catch(err =>{
       console.error(err);
     })
+    
   },
   mounted() {
-    M.AutoInit();
   }
 }
 </script>

@@ -33,11 +33,25 @@ export default {
     data:() => ({
         description:'',
         modalInstance: null,
+        modal:null,
         id:null
     }),
     mounted() {
-        M.AutoInit();
+        console.log('POSTFORM mounted');
         
+        M.AutoInit();
+        this.modal = document.querySelector('.modal');
+        const options = {
+                    onOpenEnd:function(){
+                        console.log('modal opened');
+                    },
+                    onCloseEnd:function(){
+                        this.id=null;
+                        this.description='';
+                        this.modalInstance=null;
+                    }
+                };
+        this.modalInstance = M.Modal.init(this.modal,options)
     },
     methods: {
         onSubmit(){
@@ -48,11 +62,12 @@ export default {
             }
             ts.writeTodos(todos).then((result) => {
                 //console.log(result);
-                this.description='';
-                const modal = document.querySelector('.modal')
-                this.modalInstance = M.Modal.init(modal)
+                
                 this.modalInstance.close();
+                // EMIT DATA TO PARENT
                 this.$emit('todosCreated',result.data);
+                //RESET FORM
+                this.description='';
             }).catch((err) => {
                 console.log(err);
             });
@@ -62,6 +77,7 @@ export default {
         editingTodo(todo){
             this.description=todo.description;
             this.id = todo._id;
+            
         }
     },
     
