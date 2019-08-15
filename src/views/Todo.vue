@@ -4,7 +4,7 @@
     <div class="col s6">
       
 <div class="fixed-action-btn">
-  <a class="btn-floating btn-large red">
+  <a id="menu" class="btn-floating btn-large red">
     <i class="large material-icons">apps</i>
   </a>
   <ul>
@@ -38,6 +38,12 @@
     </div>
   </div>
   <PostForm @todosCreated="addTodo" :editingTodo="editingTodo"/>
+  <div class="tap-target" data-target="menu">
+    <div class="tap-target-content">
+      <h5>Title</h5>
+      <p>A bunch of text</p>
+    </div>
+  </div>
   </div>
 </template>
 
@@ -81,6 +87,8 @@ export default {
     
   },
   mounted() {
+    
+    M.TapTarget.getInstance(document.querySelector('.tap-target')).open();
   }
 }
 </script>
