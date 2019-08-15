@@ -37,8 +37,7 @@ export default {
     }),
     mounted() {
         M.AutoInit();
-        const modal = document.querySelector('.modal')
-        this.modalInstance = M.Modal.init(modal)
+        
     },
     methods: {
         onSubmit(){
@@ -50,6 +49,8 @@ export default {
             ts.writeTodos(todos).then((result) => {
                 //console.log(result);
                 this.description='';
+                const modal = document.querySelector('.modal')
+                this.modalInstance = M.Modal.init(modal)
                 this.modalInstance.close();
                 this.$emit('todosCreated',result.data);
             }).catch((err) => {
