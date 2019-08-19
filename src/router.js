@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import About from './views/About.vue'
 import Home from './views/Home.vue'
 import Todo from './views/Todo.vue'
+import Login from './views/Login.vue'
 
 Vue.use(Router);
 
@@ -21,6 +22,10 @@ export default new Router({
         {
             path : '/Todo',
             component: Todo
+        },
+        {
+            path : '/Login',
+            component: Login
         }
     ]
 })

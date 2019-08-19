@@ -7,12 +7,13 @@
             <div class="row">
                 <div class="input-field">
                 <input placeholder="Placeholder" id="first_name" type="text" v-model="description" class="validate">
+                <p> {{ id_edit }} </p>
                 <label for="first_name">Description</label>
                 </div>
             </div>
             <div class="row">
                 <button type="submit" class="waves-effect wives-light btn">
-                {{id ? 'Update' : 'Simpan'}}
+                {{ id_edit ? id_edit : 'Simpan' }}
                 </button>
             </div>
         </form>
@@ -25,45 +26,32 @@
 import TodoServices from '../TodoServices';
 const ts = new  TodoServices();
 
+
+
 export default {
     name:"PostForm",
-    props:{
-        editingTodo:Object
+    props:['editingTodo'],
+    data:function () {
+        return{
+            description:'',
+            modal:null,
+            id_edit:null
+        }
     },
-    data:() => ({
-        description:'',
-        modalInstance: null,
-        modal:null,
-        id:null
-    }),
     mounted() {
         console.log('POSTFORM mounted');
-        
-        M.AutoInit();
-        this.modal = document.querySelector('.modal');
-        const options = {
-                    onOpenEnd:function(){
-                        console.log('modal opened');
-                    },
-                    onCloseEnd:function(){
-                        this.id=null;
-                        this.description='';
-                        this.modalInstance=null;
-                    }
-                };
-        this.modalInstance = M.Modal.init(this.modal,options)
     },
     methods: {
         onSubmit(){
             const todos = {
-                _id: this.id,
+                _id: this.id_edit,
                 description : this.description,
                 confirmed:false
             }
             ts.writeTodos(todos).then((result) => {
                 //console.log(result);
                 
-                this.modalInstance.close();
+                this.$parent.modalInstance.close();
                 // EMIT DATA TO PARENT
                 this.$emit('todosCreated',result.data);
                 //RESET FORM
@@ -73,10 +61,14 @@ export default {
             });
         }
     },
+    created() {
+        
+    },
     watch: {
         editingTodo(todo){
             this.description=todo.description;
-            this.id = todo._id;
+            this.id_edit = todo._id;
+            console.log('running watch with id='+this.id_edit);
             
         }
     },

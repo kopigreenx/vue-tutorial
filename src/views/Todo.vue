@@ -1,20 +1,6 @@
 <template>
   <div>
   <div class="row">
-    <div class="col s6">
-      
-<div class="fixed-action-btn">
-  <a id="menu" class="btn-floating btn-large red">
-    <i class="large material-icons">apps</i>
-  </a>
-  <ul>
-    <li><a class="btn-floating green modal-trigger" data-target="modal1"><i class="material-icons">add_circle_outline</i></a></li>
-  </ul>
-</div>
-      
-    </div>
-  </div>
-  <div class="row">
     <div class="col s6" v-for="(todo,index) in todos"
     v-bind:item="todo"
     :key="todo._id"
@@ -38,11 +24,14 @@
     </div>
   </div>
   <PostForm @todosCreated="addTodo" :editingTodo="editingTodo"/>
-  <div class="tap-target" data-target="menu">
-    <div class="tap-target-content">
-      <h5>Menu</h5>
-      <p>Hover This Button to reveal Add button</p>
-    </div>
+       
+  <div class="fixed-action-btn">
+    <a id="menu" class="btn-floating btn-large red">
+      <i class="large material-icons">apps</i>
+    </a>
+    <ul>
+      <li><a class="btn-floating green modal-trigger" @click="openModalAdd"><i class="material-icons">add_circle_outline</i></a></li>
+    </ul>
   </div>
   </div>
 </template>
@@ -59,12 +48,14 @@ export default {
   },
   data:() => ({
       todos:[],
-      editingTodo:null
+      editingTodo:null,
+      modalInstance:null
     }),
   methods: {
     addTodo(todo){
       console.log(todo);
       this.todos.unshift(todo);
+     
     },
     editTodo(todo){
       this.editingTodo=todo;
@@ -75,6 +66,11 @@ export default {
       }).catch((err) => {
         console.log(err);
       });
+    },
+    openModalAdd(){
+      this.modalInstance.open();
+      this.editingTodo=null;
+      
     }
   },
   created(){
@@ -87,8 +83,23 @@ export default {
     
   },
   mounted() {
-    
-    M.TapTarget.getInstance(document.querySelector('.tap-target')).open();
+    const modal = document.querySelector('.modal');
+    const float = document.querySelector('.fixed-action-btn');
+        const options = {
+                onOpenEnd:function(){
+                    console.log('modal opened with id='+this.editingTodo);
+                },
+                onCloseStart:function(){
+                    console.log('befor modal closed with id='+this.editingTodo);
+                    this.editingTodo=null;
+                },
+                onCloseEnd:function(){
+                    console.log('modal closed with id='+this.editingTodo);
+                    this.editingTodo =null;
+                }
+        };
+        this.modalInstance = M.Modal.init(modal,options);
+        M.FloatingActionButton.init(float);
   }
 }
 </script>
