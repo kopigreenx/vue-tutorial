@@ -7,13 +7,13 @@
             <div class="row">
                 <div class="input-field">
                 <input placeholder="Placeholder" id="first_name" type="text" v-model="description" class="validate">
-                <p> {{ id_edit }} </p>
+                <p> {{ editingTodo }} </p>
                 <label for="first_name">Description</label>
                 </div>
             </div>
             <div class="row">
                 <button type="submit" class="waves-effect wives-light btn">
-                {{ id_edit ? id_edit : 'Simpan' }}
+                {{ id_edit ? 'Update' : 'Simpan' }}
                 </button>
             </div>
         </form>
@@ -26,15 +26,12 @@
 import TodoServices from '../TodoServices';
 const ts = new  TodoServices();
 
-
-
 export default {
     name:"PostForm",
     props:['editingTodo'],
     data:function () {
         return{
             description:'',
-            modal:null,
             id_edit:null
         }
     },
@@ -54,8 +51,8 @@ export default {
                 this.$parent.modalInstance.close();
                 // EMIT DATA TO PARENT
                 this.$emit('todosCreated',result.data);
-                //RESET FORM
-                this.description='';
+                
+                this.description="";
             }).catch((err) => {
                 console.log(err);
             });
@@ -66,8 +63,13 @@ export default {
     },
     watch: {
         editingTodo(todo){
-            this.description=todo.description;
-            this.id_edit = todo._id;
+            if (!todo) {
+                this.description="";
+                this.id_edit = null;
+            }else{
+                this.description=todo.description;
+                this.id_edit = todo._id;
+            }
             console.log('running watch with id='+this.id_edit);
             
         }
