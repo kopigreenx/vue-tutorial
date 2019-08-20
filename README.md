@@ -27,3 +27,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### NODEJS BACKEND
+    https://github.com/kopigreenx/node-backend
