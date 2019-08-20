@@ -5,21 +5,23 @@
     v-bind:editingTodo="todo"
     :key="index"
     :index="index">
-      <div class="card blue-grey darken-1 z-depth-5">
+      <div v-bind:class="[todo.confirmed ? doneClass : progressClass]">
         <div class="card-content white-text">
-          <span class="card-title">{{todo.description}}</span>
-          <p>
+          <span class="card-title">{{todo._id}} 
             <label>
-              <input type="checkbox" :key="index" :value="todo._id" />
+              <input type="checkbox" :id="todo._id" :value="todo._id" v-model="todo.confirmed" @click="checkConfirm(todo._id,$event.target.checked,todo.description)"/>
+              <span style="font-weight:bold">{{todo.confirmed ? 'Done' : 'Progress'}}</span>
             </label>
+          </span>
+          <p>
+            {{todo.description}}
           </p>
-          <p><span>{{todo.confirmed}}</span></p>
-          <p><span>{{index}}</span></p>
+          
         </div>
         <div class="card-action">
           <a href="#!" class="modal-trigger" data-target="modal1" @click="editTodo(todo,index)">Edit</a>
-          <a href="#!" class="modal-trigger" @click="deleteTodo(todo._id)">Delete</a>
-          
+          <a href="#!" class="modal-trigger" v-if="!todo.confirmed" @click="deleteTodo(todo._id)">Delete</a>
+            
         </div>
       </div>
     </div>
@@ -52,7 +54,9 @@ export default {
       todos:[],
       editingTodo:null,
       modalInstance:null,
-      lastEdit:''
+      lastEdit:'',
+      doneClass:"card green darken-1 z-depth-5",
+      progressClass:"card blue-grey darken-4 z-depth-5"
     }},
   methods: {
     addTodo(todo){
@@ -68,6 +72,7 @@ export default {
     editTodo(todo,index){
       this.editingTodo=todo;
       console.log('indexOf = '+this.todos.indexOf(todo))
+      console.log(todo)
       this.lastEdit=index;
     },
     deleteTodo(id){
@@ -82,6 +87,19 @@ export default {
       this.editingTodo=null;
       this.lastEdit='';
       
+    },
+    checkConfirm(id,confirmed,descr){
+      const data = {
+        _id : id,
+        confirmed: confirmed,
+        description:descr
+      };
+
+      ts.writeTodos(data).then((result) => {
+                //console.log(result);
+            }).catch((err) => {
+                console.log(err);
+            });
     }
   },
   created(){

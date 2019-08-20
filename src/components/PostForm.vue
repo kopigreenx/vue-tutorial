@@ -7,7 +7,6 @@
             <div class="row">
                 <div class="input-field">
                 <input placeholder="Placeholder" id="first_name" type="text" v-model="description" class="validate">
-                <p> {{ editingTodo }} </p>
                 <label for="first_name">Description</label>
                 </div>
             </div>
@@ -32,6 +31,7 @@ export default {
     data:function () {
         return{
             description:'',
+            confirm:false,
             id_edit:null
         }
     },
@@ -43,7 +43,7 @@ export default {
             const todos = {
                 _id: this.id_edit,
                 description : this.description,
-                confirmed:false
+                confirmed:this.confirm
             }
             ts.writeTodos(todos).then((result) => {
                 //console.log(result);
@@ -66,8 +66,10 @@ export default {
             if (!todo) {
                 this.description="";
                 this.id_edit = null;
+                this.confirm = false;
             }else{
                 this.description=todo.description;
+                this.confirm=todo.confirmed;
                 this.id_edit = todo._id;
             }
             console.log('running watch with id='+this.id_edit);
