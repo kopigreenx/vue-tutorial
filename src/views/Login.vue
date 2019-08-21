@@ -21,10 +21,6 @@
 </template>
 
 <script>
-
-import UserServices from '../UserServices';
-const us = new UserServices();
-
 export default {
   name:'Login',
   data:() => ({
@@ -36,11 +32,11 @@ export default {
       const data = {
         username : this.username,
         password : this.password
-      }
-      us.Login(data).then((result) => {
-        console.log(result)
+      };
+      this.$store.dispatch('login',data).then(() => {
+        this.$router.push('/')
       }).catch((err) => {
-        console.log(err)
+        
       });
     }
   },
