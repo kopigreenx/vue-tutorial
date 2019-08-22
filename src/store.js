@@ -8,15 +8,18 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state:{
-        status:Boolean,
+        status:'',
         token:localStorage.getItem('token') || '',
-        data:{}
+        user:{}
     },
     mutations:{
-        auth_success(state,token,data,auth){
-            state.status= auth
+        auth_success(state,token,user){
+            state.status= 'success'
             state.token = token
-            state.data = data
+            state.user = user
+        },
+        auth_request(state) {
+            state.status = 'loading'
         },
         auth_error(state){
             state.status = 'error'
@@ -29,15 +32,14 @@ export default new Vuex.Store({
     actions:{
         login({commit},user){
             return new Promise((resolve,reject) => {
-                //commit('auth_request')
+                commit('auth_request')
                 axios.post('/users/login', user).then((result) => {
                     const token = result.data.token;
-                    const auth = result.data.auth;
-                    const userData = result.data.data;
-                    console.log(result);
+                    const user = result.data.data[0].username;
                     localStorage.setItem('token',token)
+                    console.log(result.data.data[0].username);
                     //axios.defaults.headers.common['x-access-token'] = token;
-                    commit('auth_success', token, userData,auth)
+                    commit('auth_success', token, user)
                     resolve(result)
                 }).catch((err) => {
                     commit('auth_error')
@@ -47,7 +49,7 @@ export default new Vuex.Store({
             })
         },
         logout({commit}){
-            return new Promise((resolve,reject) => {
+            return new Promise((resolve) => {
                 commit('logout')
                 localStorage.removeItem('token')
                 resolve();

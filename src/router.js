@@ -15,14 +15,14 @@ const router = new Router({
             path: '/',
             component: Home,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
             path : '/About',
             component: About,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
