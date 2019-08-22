@@ -1,16 +1,15 @@
 <template>
   <div>
     <div class="row">
-     <ul class="collection with-header">
+    <ul class="collection with-header">
         <li class="collection-header"><h4>Todo Display</h4></li>
         <li class="collection-item avatar" v-for="(todo, index) in todos" :key="index">
-          <i class="material-icons circle">folder</i>
+          <i class="material-icons circle blue">folder</i>
           <span class="title">{{todo._id}}</span>
           <p>{{todo.description}}</p>
           <a href="#!" class="secondary-content"><i class="material-icons" v-if="todo.confirmed">check</i></a>
         </li>
-        
-  </ul>
+    </ul>
     </div>
   </div>
 </template>

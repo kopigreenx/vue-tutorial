@@ -3,11 +3,12 @@
 <!-- Modal Structure -->
   <div id="modal1" class="modal">
     <div class="modal-content">
+        <h3>Add Categories</h3>
         <form v-on:submit.prevent="onSubmit">
             <div class="row">
                 <div class="input-field">
-                <input placeholder="Placeholder" id="first_name" type="text" v-model="description" class="validate">
-                <label for="first_name">Description</label>
+                <input placeholder="Placeholder" id="categories" type="text" v-model="description" class="validate">
+                <label for="categories">Categories</label>
                 </div>
             </div>
             <div class="row">

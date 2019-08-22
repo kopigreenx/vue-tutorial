@@ -13,9 +13,8 @@
               <span style="font-weight:bold">{{todo.confirmed ? 'Done' : 'Progress'}}</span>
             </label>
           </span>
-          <p>
-            {{todo.description}}
-          </p>
+            <h5 style="text-align:center;" class="darken-4"> {{ todo.description }} </h5>
+            <TodoDetails :parentData="todo._id"/>
           
         </div>
         <div class="card-action">
@@ -29,7 +28,7 @@
   <PostForm @todosCreated="addTodo" :editingTodo="editingTodo"/>
        
   <div class="fixed-action-btn">
-    <a id="menu" class="btn-floating btn-large red">
+    <a id="menu" class="btn-floating btn-large red pulse">
       <i class="large material-icons">apps</i>
     </a>
     <ul>
@@ -41,21 +40,26 @@
 
 <script>
 import TodoServices from '../TodoServices';
+import TodoDetailServices from '../TodoDetailServices';
 import PostForm from '../components/PostForm';
+import TodoDetails from '../components/TodoDetails'
 
 const ts = new  TodoServices();
+const tsd = new  TodoDetailServices();
 export default {
   name:"Todo",
   components:{
-    PostForm
+    PostForm,
+    TodoDetails
   },
   data:function () {
     return{
       todos:[],
       editingTodo:null,
+      parentData:null,
       modalInstance:null,
       lastEdit:'',
-      doneClass:"card green darken-1 z-depth-5",
+      doneClass:"card brown darken-1 z-depth-5",
       progressClass:"card blue-grey darken-4 z-depth-5"
     }},
   methods: {
@@ -80,6 +84,12 @@ export default {
       this.todos = this.todos.filter(p => p._id!==id);
       }).catch((err) => {
         console.log(err);
+      });
+
+      tsd.deleteTodosDetail(id).then((result) => {
+        console.log(result)
+      }).catch((err) => {
+        console.log(err)
       });
     },
     openModalAdd(){
