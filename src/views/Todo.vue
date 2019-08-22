@@ -106,6 +106,7 @@ export default {
     ts.getAllTodos()
     .then(result => {
       this.todos = result.data;
+      console.log(this.todos)
     }).catch(err =>{
       console.error(err);
     })
